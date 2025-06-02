@@ -41,8 +41,8 @@ const updateWeather = async () => {
         // Note: Replace with actual API key and endpoint in production
         const response = await fetch('https://api.weatherapi.com/v1/forecast.json?key=YOUR_API_KEY&q=beach&days=3');
         const data = await response.json();
-        
-        // For now, show placeholder weather data        weatherContainer.innerHTML = `
+          // For now, show placeholder weather data
+        weatherContainer.innerHTML = `
             <div class="weather-card">
                 <div class="power-up">☀️</div>
                 <h3>WORLD 1-1</h3>
