@@ -42,13 +42,16 @@ const updateWeather = async () => {
         const response = await fetch('https://api.weatherapi.com/v1/forecast.json?key=YOUR_API_KEY&q=beach&days=3');
         const data = await response.json();
         
-        // For now, show placeholder weather data
-        weatherContainer.innerHTML = `
+        // For now, show placeholder weather data        weatherContainer.innerHTML = `
             <div class="weather-card">
-                <i class="fas fa-sun"></i>
-                <h3>Today</h3>
-                <p>75°F | Sunny</p>
-                <p>Perfect for beach cleanup!</p>
+                <div class="power-up">☀️</div>
+                <h3>WORLD 1-1</h3>
+                <p>75°F | SUNNY</p>
+                <p class="pixel-text">PERFECT WEATHER FOR A QUEST!</p>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 80%"></div>
+                </div>
+                <p class="power-level">BEACH POWER: 80%</p>
             </div>
         `;
     } catch (error) {

@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 :root {
-    /* Color Palette */
-    --primary: #1DA1F2;      /* Ocean Blue */
-    --secondary: #00B4D8;    /* Coastal Blue */
-    --accent: #FFB703;       /* Sandy Gold */
-    --dark: #023047;         /* Deep Ocean */
-    --light: #F8F9FA;       /* Sea Foam */
-    --success: #2ECC71;      /* Eco Green */
+    /* Nintendo-inspired Color Palette */
+    --primary: #e60012;      /* Nintendo Red */
+    --secondary: #00C3E3;    /* Mario Sky Blue */
+    --accent: #FBD000;       /* Star Power Yellow */
+    --dark: #39314B;         /* Nintendo Dark */
+    --light: #FFFFFF;        /* Clean White */
+    --success: #1ED761;      /* Luigi Green */
     
     /* Typography */
     --font-main: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -18,15 +20,18 @@
 }
 
 body {
-    font-family: var(--font-main);
+    font-family: 'Press Start 2P', cursive;
     line-height: 1.6;
     color: var(--dark);
     background-color: var(--light);
+    background-image: linear-gradient(45deg, var(--light) 25%, #f0f0f0 25%, #f0f0f0 50%, var(--light) 50%, var(--light) 75%, #f0f0f0 75%, #f0f0f0);
+    background-size: 40px 40px;
 }
 
 /* Navigation */
 .navbar {
-    background-color: white;
+    background-color: var(--primary);
+    border-bottom: 4px solid var(--dark);
     padding: 1rem 5%;
     display: flex;
     justify-content: space-between;
@@ -41,18 +46,32 @@ body {
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--primary);
+    color: var(--light);
+    text-shadow: 2px 2px var(--dark);
 }
 
 .nav-links a {
-    color: var(--dark);
+    color: var(--light);
     text-decoration: none;
     margin-left: 2rem;
-    transition: color 0.3s ease;
+    text-shadow: 1px 1px var(--dark);
+    position: relative;
 }
 
-.nav-links a:hover {
-    color: var(--primary);
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
 }
 
 /* Hero Section */
@@ -79,66 +98,106 @@ body {
     margin-bottom: 2rem;
 }
 
-/* Buttons */
+/* Nintendo-style Buttons */
 .cta-button, .signup-button {
-    background-color: var(--accent);
-    color: var(--dark);
+    background-color: var(--primary);
+    color: var(--light);
     border: none;
     padding: 1rem 2rem;
-    border-radius: 50px;
-    font-size: 1.1rem;
+    border-radius: 0;
+    font-size: 1rem;
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    position: relative;
+    box-shadow: 0 4px 0 #900;
+    font-family: 'Press Start 2P', cursive;
 }
 
 .cta-button:hover, .signup-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #900;
 }
 
-/* Map Section */
-.map-section {
-    padding: 5rem 5%;
+.cta-button:active, .signup-button:active {
+    transform: translateY(4px);
+    box-shadow: none;
 }
 
-.map-container {
-    height: 400px;
-    background-color: #e9ecef;
-    border-radius: 10px;
-    margin-top: 2rem;
+/* Pixel Art Elements */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, var(--primary) 25%, transparent 25%, transparent 75%, var(--primary) 75%, var(--primary)),
+                linear-gradient(45deg, var(--primary) 25%, transparent 25%, transparent 75%, var(--primary) 75%, var(--primary));
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    opacity: 0.1;
+    pointer-events: none;
 }
 
-/* Weather Section */
-.weather-section {
-    padding: 5rem 5%;
-    background-color: var(--primary);
-    color: white;
-}
-
-.weather-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-/* Join Section */
-.join-section {
-    padding: 5rem 5%;
+/* Section Headers */
+section h2 {
     text-align: center;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    position: relative;
+    padding: 1rem;
+    text-shadow: 2px 2px var(--dark);
 }
 
+section h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: repeating-linear-gradient(
+        to right,
+        var(--primary),
+        var(--primary) 8px,
+        transparent 8px,
+        transparent 16px
+    );
+}
+
+/* Nintendo-style Cards */
+.weather-card {
+    background-color: var(--light);
+    border: 4px solid var(--dark);
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    margin: 1rem;
+    box-shadow: 8px 8px 0 var(--dark);
+    transition: all 0.3s ease;
+}
+
+.weather-card:hover {
+    transform: translate(-4px, -4px);
+    box-shadow: 12px 12px 0 var(--dark);
+}
+
+/* Form Styling */
 .signup-form {
     max-width: 500px;
     margin: 2rem auto;
 }
 
 .signup-form input {
-    width: 60%;
+    font-family: 'Press Start 2P', cursive;
+    border: 4px solid var(--dark);
     padding: 1rem;
-    border: 2px solid #ddd;
-    border-radius: 50px;
-    margin-right: 1rem;
+    width: 100%;
+    margin-bottom: 1rem;
+    box-shadow: 4px 4px 0 var(--dark);
 }
 
 /* Footer */
@@ -170,6 +229,152 @@ footer {
     text-align: center;
     padding-top: 2rem;
     border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Animation Classes */
+.animate {
+    animation: bounce-in 0.5s ease-out;
+}
+
+@keyframes bounce-in {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Power-up Animation */
+.power-up-container {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.power-up {
+    font-size: 2.5rem;
+    animation: float 2s ease-in-out infinite;
+    position: relative;
+}
+
+.power-up:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+.power-up:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Pixel Art Overlay */
+.pixel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(transparent 50%, rgba(0,0,0,0.1) 50%),
+        linear-gradient(90deg, rgba(255,255,255,0.1) 50%, transparent 50%);
+    background-size: 4px 4px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Pixel Coins Animation */
+.pixel-coins {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-image: radial-gradient(circle, var(--accent) 2px, transparent 2px);
+    background-size: 50px 50px;
+    opacity: 0.2;
+    animation: twinkle 3s infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Enhanced Section Transitions */
+section {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+section:hover {
+    transform: scale(1.01);
+}
+
+/* Nintendo-style Loading Animation */
+.loading::after {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    animation: dots 1s steps(5, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80% { content: '...'; }
+}
+
+/* Retro Border Effect */
+.map-container {
+    border: 4px solid var(--dark);
+    position: relative;
+}
+
+.map-container::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    background: repeating-linear-gradient(
+        45deg,
+        var(--accent),
+        var(--accent) 10px,
+        transparent 10px,
+        transparent 20px
+    );
+    z-index: -1;
+    animation: border-dance 20s linear infinite;
+}
+
+@keyframes border-dance {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 40px 40px;
+    }
 }
 
 /* Responsive Design */
