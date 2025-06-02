@@ -140,7 +140,6 @@ const initAnimations = () => {
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    initMap();
     updateWeather();
     initForms();
     initSmoothScroll();
