@@ -12,24 +12,39 @@ const initMap = async () => {
     document.head.appendChild(leafletScript);
 
     // Wait for Leaflet to load
-    await new Promise(resolve => leafletScript.onload = resolve);
-
-    // Initialize map
-    const map = L.map('cleanup-map').setView([34.0522, -118.2437], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
+    await new Promise(resolve => leafletScript.onload = resolve);    // Initialize map with retro style
+    const map = L.map('cleanup-map', {
+        zoomControl: false // We'll add custom styled zoom controls
+    }).setView([34.0522, -118.2437], 10);
+    
+    // Add custom retro-styled tiles
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap contributors, © CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19
+    }).addTo(map);
+    
+    // Add custom zoom controls
+    L.control.zoom({
+        position: 'bottomright'
     }).addTo(map);
 
     // Sample cleanup locations (to be replaced with real data)
     const cleanups = [
         { lat: 34.0522, lng: -118.2437, title: 'Santa Monica Beach Cleanup' },
         { lat: 34.0005, lng: -118.8068, title: 'Malibu Coastal Cleanup' }
-    ];
-
-    // Add markers for cleanup locations
+    ];    // Add Nintendo-styled markers for cleanup locations
     cleanups.forEach(cleanup => {
-        L.marker([cleanup.lat, cleanup.lng])
-            .bindPopup(cleanup.title)
+        const marker = L.marker([cleanup.lat, cleanup.lng])
+            .bindPopup(`
+                <div class="nintendo-popup">
+                    <h3>⭐ ${cleanup.title} ⭐</h3>
+                    <p>Join this quest to earn points!</p>
+                    <button class="cta-button" onclick="alert('Quest joined! Get ready for your beach cleanup adventure!')">
+                        Accept Quest
+                    </button>
+                </div>
+            `)
             .addTo(map);
     });
 };

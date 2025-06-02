@@ -10,7 +10,7 @@
     --success: #1ED761;      /* Luigi Green */
     
     /* Typography */
-    --font-main: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-main: 'Press Start 2P', cursive;
 }
 
 * {
@@ -83,19 +83,36 @@ body {
     align-items: center;
     text-align: center;
     padding: 2rem;
-    background: linear-gradient(rgba(2, 48, 71, 0.8), rgba(2, 48, 71, 0.8)),
-                url('https://source.unsplash.com/1600x900/?beach') center/cover;
-    color: white;
+    margin-top: 60px;
+    background: var(--dark);
+    background-image: 
+        linear-gradient(45deg, var(--primary) 25%, transparent 25%, transparent 75%, var(--primary) 75%, var(--primary)),
+        linear-gradient(45deg, var(--primary) 25%, transparent 25%, transparent 75%, var(--primary) 75%, var(--primary));
+    background-size: 60px 60px;
+    background-position: 0 0, 30px 30px;
+    color: var(--light);
+    position: relative;
+    overflow: hidden;
 }
 
 .hero h1 {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--accent);
+    text-shadow: 4px 4px var(--dark), 
+                 -2px -2px var(--primary),
+                 2px -2px var(--primary),
+                 -2px 2px var(--primary),
+                 2px 2px var(--primary);
+    letter-spacing: 2px;
 }
 
 .hero p {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-bottom: 2rem;
+    color: var(--light);
+    text-shadow: 2px 2px var(--dark);
+    letter-spacing: 1px;
 }
 
 /* Nintendo-style Buttons */
@@ -170,14 +187,67 @@ section h2::after {
 
 /* Nintendo-style Cards */
 .weather-card {
-    background-color: var(--light);
-    border: 4px solid var(--dark);
+    background-color: var(--dark);
+    border: 4px solid var(--accent);
     padding: 1.5rem;
     text-align: center;
     position: relative;
     margin: 1rem;
-    box-shadow: 8px 8px 0 var(--dark);
+    box-shadow: 8px 8px 0 var(--primary);
     transition: all 0.3s ease;
+    color: var(--light);
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.weather-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border: 2px dashed var(--accent);
+    pointer-events: none;
+}
+
+/* Progress bar styling */
+.progress-bar {
+    background: var(--light);
+    border: 2px solid var(--accent);
+    height: 20px;
+    margin: 1rem 0;
+    position: relative;
+    padding: 2px;
+}
+
+.progress {
+    background: var(--success);
+    height: 100%;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        rgba(255,255,255,0.2) 5px,
+        rgba(255,255,255,0.2) 10px
+    );
+    animation: progress-stripe 1s linear infinite;
+}
+
+@keyframes progress-stripe {
+    from { background-position: 0 0; }
+    to { background-position: 20px 0; }
 }
 
 .weather-card:hover {
@@ -348,33 +418,164 @@ section:hover {
 .map-container {
     border: 4px solid var(--dark);
     position: relative;
+    background-color: var(--dark);
+    padding: 4px;
+    border-radius: 4px;
+    box-shadow: 
+        0 0 0 4px var(--dark),
+        0 0 0 8px var(--accent),
+        8px 8px 0 8px rgba(0,0,0,0.3);
+    margin: 1rem auto;
+    max-width: 1200px;
+    height: 500px;
 }
 
-.map-container::before {
+.map-section {
+    background-color: var(--dark);
+    padding: 4rem 2rem;
+    margin-top: 2rem;
+}
+
+/* Quest Location Marker Animation */
+.leaflet-marker-icon {
+    animation: marker-bounce 1s ease-in-out infinite;
+}
+
+@keyframes marker-bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Nintendo Section Styling */
+.nintendo-section {
+    padding: 4rem 5%;
+    background-color: var(--dark);
+    position: relative;
+    border-top: 4px solid var(--accent);
+    border-bottom: 4px solid var(--accent);
+}
+
+.nintendo-section::before {
     content: '';
     position: absolute;
-    top: -4px;
-    left: -4px;
-    right: -4px;
-    bottom: -4px;
-    background: repeating-linear-gradient(
-        45deg,
-        var(--accent),
-        var(--accent) 10px,
-        transparent 10px,
-        transparent 20px
-    );
-    z-index: -1;
-    animation: border-dance 20s linear infinite;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(45deg, var(--primary) 12px, transparent 0, transparent 20px),
+        linear-gradient(-45deg, var(--primary) 12px, transparent 0, transparent 20px);
+    background-size: 40px 40px;
+    opacity: 0.1;
 }
 
-@keyframes border-dance {
+/* 8-bit Cloud Animation */
+.weather-section::after {
+    content: '☁️';
+    position: absolute;
+    font-size: 2rem;
+    top: 20%;
+    left: -50px;
+    animation: float-cloud 15s linear infinite;
+}
+
+@keyframes float-cloud {
     from {
-        background-position: 0 0;
+        left: -50px;
     }
     to {
-        background-position: 40px 40px;
+        left: calc(100% + 50px);
     }
+}
+
+/* Power Level Styling */
+.power-level {
+    color: var(--accent);
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    text-shadow: 2px 2px var(--dark);
+    letter-spacing: 1px;
+}
+
+/* Pixel Text Effect */
+.pixel-text {
+    color: var(--light);
+    text-shadow: 
+        2px 2px var(--primary),
+        -2px -2px var(--dark);
+    letter-spacing: 1px;
+    margin: 1rem 0;
+}
+
+/* Nintendo-style Map Popups */
+.leaflet-popup-content-wrapper {
+    background-color: var(--dark);
+    color: var(--light);
+    border: 4px solid var(--accent);
+    border-radius: 0;
+    box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
+}
+
+.leaflet-popup-tip {
+    background-color: var(--accent);
+}
+
+.nintendo-popup {
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+    padding: 1rem;
+}
+
+.nintendo-popup h3 {
+    color: var(--accent);
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px var(--primary);
+}
+
+.nintendo-popup p {
+    font-size: 0.7rem;
+    margin-bottom: 1rem;
+    color: var(--light);
+}
+
+.nintendo-popup .cta-button {
+    font-size: 0.7rem;
+    padding: 0.5rem 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Map Controls Nintendo Style */
+.leaflet-control-zoom {
+    border: none !important;
+    margin: 1rem !important;
+}
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+    background-color: var(--primary) !important;
+    color: var(--light) !important;
+    border: 4px solid var(--accent) !important;
+    font-family: 'Press Start 2P', cursive !important;
+    font-size: 1.2rem !important;
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 30px !important;
+    text-align: center !important;
+    margin-bottom: 8px !important;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.3) !important;
+}
+
+.leaflet-control-zoom-in:hover,
+.leaflet-control-zoom-out:hover {
+    background-color: var(--accent) !important;
+    color: var(--dark) !important;
+    transform: translateY(2px);
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.3) !important;
 }
 
 /* Responsive Design */
