@@ -49,28 +49,83 @@ const initMap = async () => {
     });
 };
 
-// Weather API integration
+// Weather API integration using data.gov.sg
 const updateWeather = async () => {
     const weatherContainer = document.querySelector('.weather-container');
+    const currentWeather = weatherContainer.querySelector('.current-weather');
+    const forecastContainer = weatherContainer.querySelector('.forecast-container');
+
     try {
-        // Note: Replace with actual API key and endpoint in production
-        const response = await fetch('https://api.weatherapi.com/v1/forecast.json?key=YOUR_API_KEY&q=beach&days=3&units=metric');
-        const data = await response.json();
-          // For now, show placeholder weather data
-        weatherContainer.innerHTML = `
-            <div class="weather-card">                <div class="power-up">☀️</div>
-                <h3>WORLD 1-1</h3>
-                <p>24°C | SUNNY</p>
-                <p class="pixel-text">PERFECT WEATHER FOR A QUEST!</p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: 80%"></div>
-                </div>
-                <p class="power-level">BEACH POWER: 80%</p>
+        // Fetch current weather data from data.gov.sg
+        const date = new Date().toISOString().split('T')[0];
+        const [currentResponse, forecastResponse] = await Promise.all([
+            fetch(`https://api.data.gov.sg/v1/environment/air-temperature`),
+            fetch(`https://api.data.gov.sg/v1/environment/4-day-weather-forecast`)
+        ]);
+
+        const currentData = await currentResponse.json();
+        const forecastData = await forecastResponse.json();
+
+        // Get the latest temperature reading for Pasir Ris
+        const latestReading = currentData.items[currentData.items.length - 1].readings
+            .find(reading => reading.station_id === 'S106') || { value: 'N/A' };
+
+        // Update current weather
+        currentWeather.innerHTML = `
+            <div class="power-up">🌡️</div>
+            <h3>PASIR RIS BEACH</h3>
+            <p class="current-temp">${latestReading.value}°C</p>
+            <p class="pixel-text">BEACH CLEANUP CONDITIONS</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: 85%"></div>
             </div>
+            <p class="power-level">QUEST READINESS: 85%</p>
         `;
+
+        // Update 4-day forecast
+        const forecastHTML = forecastData.items[0].forecasts
+            .map(day => {
+                const date = new Date(day.date);
+                const formattedDate = date.toLocaleDateString('en-SG', { 
+                    weekday: 'short', 
+                    month: 'short', 
+                    day: 'numeric' 
+                });
+                
+                // Map weather forecast to appropriate emoji
+                const weatherEmoji = {
+                    'Partly Cloudy': '⛅',
+                    'Cloudy': '☁️',
+                    'Light Rain': '🌦️',
+                    'Moderate Rain': '🌧️',
+                    'Heavy Rain': '⛈️',
+                    'Sunny': '☀️',
+                    'Light Showers': '🌦️',
+                    'Showers': '🌧️',
+                    'Thundery Showers': '⛈️'
+                }[day.forecast] || '🌤️';
+
+                return `
+                    <div class="forecast-card">
+                        <div class="forecast-date">${formattedDate}</div>
+                        <div class="forecast-icon">${weatherEmoji}</div>
+                        <div class="forecast-temp">${day.temperature.low}-${day.temperature.high}°C</div>
+                        <div class="forecast-desc">${day.forecast}</div>
+                    </div>
+                `;
+            })
+            .join('');
+
+        forecastContainer.innerHTML = forecastHTML;
+
     } catch (error) {
         console.error('Error fetching weather:', error);
-        weatherContainer.innerHTML = '<p>Weather data unavailable</p>';
+        weatherContainer.innerHTML = `
+            <div class="weather-card">
+                <p class="pixel-text">⚠️ Weather data currently unavailable</p>
+                <p>Please try again later</p>
+            </div>
+        `;
     }
 };
 
